@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sim_gpio.h"
+#include "wiringpi_gpio.h"
 
 class Stepper {
     public:
@@ -9,8 +9,8 @@ class Stepper {
 
     private:
         int _steps_per_rev;
-        SimGPIO _gpio;
+        WiringPiGPIO _gpio;
 
         const int _dir_pin = 0;
-        const int _step_pin = 1;
+        const int _step_pin = 0;
 };

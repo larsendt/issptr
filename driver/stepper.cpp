@@ -3,7 +3,7 @@
 
 Stepper::Stepper(int steps_per_rev) {
     _steps_per_rev = steps_per_rev;
-    _gpio = SimGPIO();
+    _gpio = WiringPiGPIO();
 }
 
 void Stepper::rotate(float deg, float rpm) {
@@ -25,6 +25,6 @@ void Stepper::rotate(float deg, float rpm) {
     for(int i = 0; i < steps; i++) {
         std::cout << "sleep " << ns_per_step << " ns; toggle " << toggle << std::endl;
         _gpio.set(_step_pin, toggle);
-        toggle = !toggle;
+        //toggle = !toggle;
     }
 }
