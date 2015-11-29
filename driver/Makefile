@@ -1,7 +1,7 @@
 CPP = g++
 CFLAGS = -g -Wall -I/usr/local/include
 LIBS=-L/usr/local/lib -lwiringPi
-OBJS = main.o stepper.o
+OBJS = main.o stepper.o magnetometer.o
 
 all: issptrdriver
 
