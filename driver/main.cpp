@@ -1,14 +1,24 @@
 #include <iostream>
 #include <stdlib.h>
+#include <unistd.h>
+#include "magnetometer.h"
 #include "stepper.h"
 
 int main(int argc, char *argv[]) {
-    if(argc < 3) { 
-        std::cout << "usage: " << argv[0] << " <deg> <rpm>" << std::endl;
-        return 1;
-    }
-
     Stepper s(513, 0, 1, 2, 3);
-    s.rotate(atoi(argv[1]), atoi(argv[2]));
+    Magnetometer m;
+
+    float cur_rot = 0;
+
+    while(1) {
+        float heading = m.compassDeg();
+        float rotation = (int)(heading - cur_rot);
+        std::cout << "heading: " << heading << " rotation: " << rotation << std::endl;
+        if(rotation != 0) {
+            s.rotate(rotation, 15);
+            cur_rot = heading;
+        }
+        sleep(1);
+    }
     return 0;
 }
