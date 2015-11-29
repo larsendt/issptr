@@ -11,7 +11,7 @@ class Stepper {
     private:
         void sleep(int nsec); 
         void setPins(int a1, int a2, int b1, int b2);
-        void step(int step_num, int direction, int ns_per_step);
+        void _step(int step_num, int direction, int ns_per_step);
 
         int _steps_per_rev;
         int _a1;

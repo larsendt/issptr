@@ -41,7 +41,7 @@ void Stepper::step() {
         return;
     }
 
-    step(_steps_done, _direction, _ns_per_step);
+    _step(_steps_done, _direction, _ns_per_step);
     _steps_done += 1;
 }
 
@@ -50,34 +50,9 @@ bool Stepper::doneRotating() {
 }
 
 void Stepper::rotate(float deg, float rpm) {
-    int steps = (int)((deg / 360.0) * _steps_per_rev);
-    steps = steps > 0 ? steps : -steps;
-
-    float sec_per_rev = 60.0 / rpm;
-    float sec_per_step = sec_per_rev / _steps_per_rev;
-    int ns_per_step = (int)(sec_per_step * 1e9);
-
-    for(int i = 0; i < steps/4; i++) {
-        if(deg > 0) {
-            setPins(1, 0, 1, 0);
-            sleep(ns_per_step);
-            setPins(0, 1, 1, 0);
-            sleep(ns_per_step);
-            setPins(0, 1, 0, 1);
-            sleep(ns_per_step);
-            setPins(1, 0, 0, 1);
-            sleep(ns_per_step);
-        }
-        else {
-            setPins(1, 0, 0, 1);
-            sleep(ns_per_step);
-            setPins(0, 1, 0, 1);
-            sleep(ns_per_step);
-            setPins(0, 1, 1, 0);
-            sleep(ns_per_step);
-            setPins(1, 0, 1, 0);
-            sleep(ns_per_step);
-        }
+    nonblockingRotate(deg, rpm);
+    while(!doneRotating()) {
+        step();
     }
 }
 
@@ -95,7 +70,7 @@ void Stepper::sleep(int nsec) {
     nanosleep(&ts, NULL);
 }
 
-void Stepper::step(int step_num, int direction, int ns_per_step) {
+void Stepper::_step(int step_num, int direction, int ns_per_step) {
     if(direction > 0) {
         switch(step_num % 4) {
             case 0:
