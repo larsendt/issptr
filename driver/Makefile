@@ -12,3 +12,5 @@ issptrdriver: $(OBJS)
 	$(CPP) $(CFLAGS) -c -o $@ $<
 
 
+.PHONY clean:
+	rm -f *.o issptrdriver
