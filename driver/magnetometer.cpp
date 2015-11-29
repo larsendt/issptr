@@ -30,7 +30,7 @@ float Magnetometer::compassDeg() {
 }
 
 void Magnetometer::read() {
-    while(read8(MAG_SR_REG_M) & 0x1 == 0) {
+    while((read8(MAG_SR_REG_M) & 0x1) == 0) {
         std::cout << "data not ready" << std::endl;
     }
 
