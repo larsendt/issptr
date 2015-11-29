@@ -1,14 +1,20 @@
 #include "stepper.h"
 #include <iostream>
 #include <time.h>
+#include <wiringPi.h>
 
 Stepper::Stepper(int steps_per_rev, int a1_pin, int a2_pin, int b1_pin, int b2_pin) {
     _steps_per_rev = steps_per_rev;
-    _gpio = WiringPiGPIO();
     _a1 = a1_pin;
     _a2 = a2_pin;
     _b1 = b1_pin;
     _b2 = b2_pin;
+
+    wiringPiSetup();
+    pinMode(_a1, OUTPUT);
+    pinMode(_a2, OUTPUT);
+    pinMode(_b1, OUTPUT);
+    pinMode(_b2, OUTPUT);
 }
 
 void Stepper::rotate(float deg, float rpm) {
@@ -44,10 +50,10 @@ void Stepper::rotate(float deg, float rpm) {
 }
 
 void Stepper::setPins(int a1, int a2, int b1, int b2) {
-    _gpio.set(_a1, a1);
-    _gpio.set(_a2, a2);
-    _gpio.set(_b1, b1);
-    _gpio.set(_b2, b2);
+    digitalWrite(_a1, a1);
+    digitalWrite(_a2, a2);
+    digitalWrite(_b1, b1);
+    digitalWrite(_b2, b2);
 }
 
 void Stepper::sleep(int nsec) {
